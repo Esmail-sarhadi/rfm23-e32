@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقایسه جامع ماژول‌های RF</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            /* پالت رنگی جدید */
+            --primary-color: #2563eb;          /* آبی سیر */
+            --primary-light: #3b82f6;          /* آبی روشن */
+            --primary-dark: #1d4ed8;           /* آبی تیره */
+            --secondary-color: #10b981;        /* سبز */
+            --secondary-light: #34d399;        /* سبز روشن */
+            --warning-color: #f59e0b;          /* نارنجی */
+            --danger-color: #ef4444;           /* قرمز */
+            --success-color: #22c55e;          /* سبز موفقیت */
+            --background: #f8fafc;             /* پس‌زمینه اصلی */
+            --card-bg: #ffffff;                /* پس‌زمینه کارت */
+            --text-primary: #1e293b;           /* متن اصلی */
+            --text-secondary: #64748b;         /* متن ثانویه */
+            --border-color: #e2e8f0;           /* رنگ حاشیه */
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                           0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+            background-color: var(--background);
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .container {
+            position: relative;
+            padding-top: 2rem;
+        }
+
+        /* گرادیان بالای صفحه */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to left, #2563eb, #10b981);
+            z-index: 1;
+        }
+
+        /* استایل ناوبری */
+        .nav-pills {
+            background: var(--card-bg);
+            padding: 0.75rem;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-pills .nav-link {
+            color: var(--text-secondary);
+            margin: 0.25rem;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-pills .nav-link:hover {
+            color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.4);
+        }
+
+        /* استایل کارت‌ها */
+        .card {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .card-body {
+            padding: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* نشان‌های ویژگی */
+        .feature-badge {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            margin: 0.5rem;
+            display: inline-block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .feature-badge:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* استایل لیست مزایا و معایب */
+        .pros-cons-list {
+            list-style: none;
+            padding: 0;
+            margin-top: auto;
+        }
+
+        .pros-cons-list li {
+            margin: 0.75rem 0;
+            padding: 1rem 3rem 1rem 1rem;
+            border-radius: 0.75rem;
+            background-color: var(--background);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pros-cons-list li.pro {
+            border-right: 4px solid var(--success-color);
+        }
+
+        .pros-cons-list li.con {
+            border-right: 4px solid var(--danger-color);
+        }
+
+        .pros-cons-list li i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .pros-cons-list li:hover {
+            transform: translateX(-5px);
+            box-shadow: var(--card-shadow);
+        }
+
+        /* استایل آیکون‌ها */
+        .module-icon {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin: 1.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .module-icon {
+            transform: scale(1.1);
+            color: var(--primary-light);
+        }
+
+        /* استایل جدول مقایسه */
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.25rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .comparison-table td {
+            padding: 1.25rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-table tr:hover td {
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .highlight {
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        /* استایل کارت کاربرد */
+        .application-card {
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin: 0.75rem 0;
+            background-color: var(--background);
+            border-right: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .application-card:hover {
+            transform: translateX(-5px);
+            box-shadow: var(--card-shadow);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        /* استایل توصیه‌های کاربرد */
+        .usage-recommendation {
+            background-color: rgba(37, 99, 235, 0.05);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .usage-recommendation:hover {
+            box-shadow: var(--card-shadow);
+            border-color: var(--primary-light);
+        }
+
+        .usage-recommendation h5 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* استایل عمومی */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 768px) {
+            .nav-pills .nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+                margin: 0.25rem;
+            }
+            
+            .card-body {
+                padding: 1.5rem;
+            }
+            
+            .comparison-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .feature-badge {
+                font-size: 0.75rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .pros-cons-list li {
+                padding: 0.75rem 2.5rem 0.75rem 0.75rem;
+            }
+        }
+
+        /* انیمیشن‌ها */
+        .tab-pane {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .tab-pane.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">مقایسه جامع ماژول‌های RF: E32-433T30D و RFM23BP</h1>
+
+        <!-- Navigation Pills -->
+        <ul class="nav nav-pills justify-content-center mb-4" id="comparison-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="pill" href="#overview">نمای کلی</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#specs">مشخصات فنی</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#comparison">مقایسه تخصصی</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#recommendation">راهنمای انتخاب</a>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Overview Tab -->
+            <div class="tab-pane fade show active" id="overview">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <i class="fas fa-broadcast-tower module-icon"></i>
+                                    <h3>E32-433T30D</h3>
+                                </div>
+                                <div class="text-center mb-4">
+                                    <span class="feature-badge">LoRa مدولاسیون</span>
+                                    <span class="feature-badge">برد 8 کیلومتر</span>
+                                    <span class="feature-badge">UART رابط</span>
+                                </div>
+                                <ul class="pros-cons-list">
+                                    <li class="pro"><i class="fas fa-check-circle text-success me-2"></i>برد عالی تا 8 کیلومتر</li>
+                                    <li class="pro"><i class="fas fa-check-circle text-success me-2"></i>راه‌اندازی ساده با UART</li>
+                                    <li class="pro"><i class="fas fa-check-circle text-success me-2"></i>مقاومت بالا در برابر نویز</li>
+                                    <li class="con"><i class="fas fa-times-circle text-danger me-2"></i>نرخ داده محدودتر</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <i class="fas fa-microchip module-icon"></i>
+                                    <h3>RFM23BP</h3>
+                                </div>
+                                <div class="text-center mb-4">
+                                    <span class="feature-badge">FSK/GFSK مدولاسیون</span>
+                                    <span class="feature-badge">برد 4 کیلومتر</span>
+                                    <span class="feature-badge">SPI رابط</span>
+                                </div>
+                                <ul class="pros-cons-list">
+                                    <li class="pro"><i class="fas fa-check-circle text-success me-2"></i>نرخ داده بالاتر تا 256kbps</li>
+                                    <li class="pro"><i class="fas fa-check-circle text-success me-2"></i>انعطاف‌پذیری در تنظیمات</li>
+                                    <li class="pro"><i class="fas fa-check-circle text-success me-2"></i>سنسورهای داخلی</li>
+                                    <li class="con"><i class="fas fa-times-circle text-danger me-2"></i>پیچیدگی پیاده‌سازی</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Specifications Tab -->
+            <div class="tab-pane fade" id="specs">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>مشخصه</th>
+                                    <th>E32-433T30D</th>
+                                    <th>RFM23BP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>فرکانس کاری</td>
+                                    <td>410-441 MHz</td>
+                                    <td>433/868/915 MHz</td>
+                                </tr>
+                                <tr class="highlight">
+                                    <td>حداکثر توان خروجی</td>
+                                    <td>30dBm (1W)</td>
+                                    <td>30dBm (1W)</td>
+                                </tr>
+                                <tr>
+                                    <td>حساسیت گیرنده</td>
+                                    <td class="spec-value">-148 dBm</td>
+                                    <td>-121 dBm</td>
+                                </tr>
+                                <tr>
+                                    <td>نرخ انتقال داده</td>
+                                    <td>0.3-19.2 kbps</td>
+                                    <td class="spec-value">0.123-256 kbps</td>
+                                </tr>
+                                <tr>
+                                    <td>ولتاژ عملیاتی</td>
+                                    <td>3.3-5.2V</td>
+                                    <td>1.8-3.6V</td>
+                                </tr>
+                                <tr>
+                                    <td>مصرف در حالت دریافت</td>
+                                    <td class="spec-value">16mA</td>
+                                    <td>25mA</td>
+                                </tr>
+                                <tr>
+                                    <td>مصرف در حالت ارسال</td>
+                                    <td>600mA @ 30dBm</td>
+                                    <td>550mA @ 30dBm</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Comparison Tab -->
+            <div class="tab-pane fade" id="comparison">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>مزایای E32-433T30D</h4>
+                                <div class="application-card">
+                                    <h5><i class="fas fa-broadcast-tower me-2"></i>برد و پوشش</h5>
+                                    <p>برد تا 8 کیلومتر در شرایط ایده‌آل با مدولاسیون LoRa</p>
+                                </div>
+                                <div class="application-card">
+                                    <h5><i class="fas fa-shield-alt me-2"></i>مقاومت در برابر نویز</h5>
+                                    <p>مدولاسیون LoRa مقاومت بالایی در برابر تداخل و نویز دارد</p>
+                                </div>
+                                <div class="application-card">
+                                    <h5><i class="fas fa-plug me-2"></i>راه‌اندازی ساده</h5>
+                                    <p>ارتباط UART ساده‌تر با میکروکنترلرها مانند ESP32</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>مزایای RFM23BP</h4>
+                                <div class="application-card">
+                                    <h5><i class="fas fa-tachometer-alt me-2"></i>سرعت انتقال داده</h5>
+                                    <p>نرخ داده بالاتر تا 256kbps برای کاربردهای پرسرعت</p>
+                                </div>
+                                <div class="application-card">
+                                    <h5><i class="fas fa-cogs me-2"></i>قابلیت تنظیم</h5>
+                                    <p>کنترل دقیق پارامترها و پشتیبانی از چند نوع مدولاسیون</p>
+                                </div>
+                                <div class="application-card">
+                                    <h5><i class="fas fa-microchip me-2"></i>امکانات اضافی</h5>
+                                    <p>سنسور دما و ولتاژ داخلی، RSSI دیجیتال</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendation Tab -->
+            <div class="tab-pane fade" id="recommendation">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="mb-4">راهنمای انتخاب ماژول</h4>
+                        
+                        <div class="usage-recommendation">
+                            <h5 class="text-primary">E32-433T30D را انتخاب کنید اگر:</h5>
+                            <ul>
+                                <li>نیاز به برد ارتباطی بالا (تا 8 کیلومتر) دارید</li>
+                                <li>محیط کاری شما دارای نویز الکترومغناطیسی است</li>
+                                <li>راه‌اندازی ساده و سریع با UART می‌خواهید</li>
+                                <li>مصرف انرژی کمتر در حالت دریافت اهمیت دارد</li>
+                                <li>امنیت داده و رمزنگاری برایتان مهم است</li>
+                            </ul>
+                        </div>
+
+                        <div class="usage-recommendation mt-4">
+                            <h5 class="text-primary">RFM23BP را انتخاب کنید اگر:</h5>
+                            <ul>
+                                <li>نیاز به سرعت انتقال داده بالا (تا 256kbps) دارید</li>
+                                <li>می‌خواهید کنترل دقیق روی پارامترهای رادیویی داشته باشید</li>
+                                <li>به سنسورهای داخلی دما و ولتاژ نیاز دارید</li>
+                                <li>پشتیبانی از چندین نوع مدولاسیون برایتان مهم است</li>
+                            </ul>
+                        </div>
+
+                        <div class="card bg-light mt-4">
+                            <div class="card-body">
+                                <h5 class="text-primary">نکات تکمیلی:</h5>
+                                <ul>
+                                    <li>هر دو ماژول توان خروجی یکسان 1 وات دارند</li>
+                                    <li>E32-433T30D برای ارتباطات برد بلند و محیط‌های نویزی مناسب‌تر است</li>
+                                    <li>RFM23BP انعطاف‌پذیری بیشتری در تنظیمات و مدولاسیون دارد</li>
+                                    <li>برای کار با ESP32، E32-433T30D راه‌اندازی ساده‌تری دارد</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5>کاربردهای عملی:</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="application-card">
+                                        <h6>E32-433T30D مناسب برای:</h6>
+                                        <ul>
+                                            <li>سیستم‌های کنترل از راه دور صنعتی</li>
+                                            <li>شبکه‌های سنسور در محیط‌های وسیع</li>
+                                            <li>سیستم‌های امنیتی و نظارتی</li>
+                                            <li>کنترل تجهیزات در فواصل دور</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="application-card">
+                                        <h6>RFM23BP مناسب برای:</h6>
+                                        <ul>
+                                            <li>سیستم‌های جمع‌آوری داده با سرعت بالا</li>
+                                            <li>پروژه‌های نیازمند مانیتورینگ دما</li>
+                                            <li>ارتباطات کوتاه‌برد با نرخ داده بالا</li>
+                                            <li>سیستم‌های با نیاز به کنترل دقیق پارامترها</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+      
+    </script>
+</body>
+</html>
